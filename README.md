@@ -14,7 +14,7 @@ Reference the file under resources like this:
 
     resources:
       - url: /local/custom-lovelace/home-feed-card/lovelace-home-feed-card.js?v=0.0.0
-        type: js
+        type: module
 
 ### With HACS
 Search for "Lovelace Home Feed Card" in the store and follow the instructions
@@ -51,60 +51,26 @@ Version 0.2.4 uses dynamic module imports to import the Moment module. Firefox v
 
 ![Example](https://user-images.githubusercontent.com/2099542/53899297-d0abb580-4031-11e9-8357-ac45c71e95f5.png)
 
-### card_id (optional, added in 0.4.0)
-If this is set, it is used as the key for cacheing the feed in Local Storage, otherwise a key based on URL and card title is used.
+| Name | Type | Default | Description | Added in | 
+| ---- | :--: | :-----: | ----------- | :-----: |
+| `card_id` | string |  | If this is set, it is used as the key for cacheing the feed in Local Storage, otherwise a key based on URL and card title is used. | 0.4.0 |
+| `calendars` | array |  | This is a list of calendar entities you want events to display for in your feed. |  |
+| `calendar_days_back` | number | 0 | The number of days before the current day to include calendar events for in the feed | 0.3.5b2 |
+| `calendar_days_forward` | number | 0 | The number of days after the current day to include calendar events for in the feed. This will include events up to the end of that day so, if you only want the current day, this should be set to 0 | 0.3.5b2 |
+| `history_days_back` | number | 0 | The number of days before the current day to include event history for in the feed | 0.4.0b3 |
+| `id_filter` |  |  | This is a regular expression for filtering persistent notifications by notification id. In the example above, "^home_feed_.\*" will result in only notifications with ids starting with home_feed_ from being displayed. |  |
+| `show_empty` | boolean | true | Whether to show the card if there are no items to show |  |
+| `scrollbars_enabled` | boolean | true | This controls whether the feed is scrollable. If this is set to false then, by default, all items will be displayed unless the **max_height** or **max_item_count** option is used. |  |
+| `max_height` |  | 28em when scrollbars enabled, else unlimited | The maximum height of the feed in CSS format (e.g. "100px", "20em", etc.). When scrollbars are disabled, the content will be cut off at this height, otherwise it will control the scrollable height. |  |
+| `max_item_count` | number | unlimited | The maximum number of items to show in the feed, useful if scrollbars are disabled. |  |
+| `more_info_on_tap` | boolean | false | When this is true, tapping/clicking and entity will display the more-info dialogue. This can be overridden for individual entities (see later). From version 0.3.0 this also supports notifications, calendar events and multi-item entities. Multi-item entities require the new **detail_template** option (see later). |  |
+| `compact_mode` | boolean | false | When this is true, a more compact layout is used where the time is displayed on the same line as the item content. <br>**Note:** Due to layout constraints this also removes the dismiss button from notifications and so notifications will always be clickable in compact mode even if **more_info_on_tap** is disabled. |  |
+| `exact_durations` | boolean | false | By default, durations of less than a minute are displayed as "<1 minute ago" or "in <1 minute". Setting this option to true disables this, and displays the exact duration. <br>**Note:** Doing this will make the time difference display refresh every second until the duration is 1 minute |  |
+| `state_color` | boolean | false | Setting this to true will change the icon colour based on the state (the same as the option in the standard Entities card) |  |
+| `entities` |  |  | A list of entities to display on the feed. These can be displayed as single items, or multiple items from a sensor attribute (see the section on multi-item entities). <br>Single item entities are displayed as follows:<br> * For sensors with a device_class of `timestamp` the message text is the entity name and the time is the state of the sensor.<br> * For other single-valued entities the default message text is in the format "*entity name* @ *state*" (but can be customized by using the `content_template` option, see below) and the time is the last modified time of the entity.<br>Each entity can be just an entity id or an `entity` object, allowing more customisation. |  |
 
-### calendars (optional)
-This is a list of calendar entities you want events to display for in your feed.
 
-### calendar_days_back (optional, defaults to 0, added in 0.3.5b2)
-The number of days before the current day to include calendar events for in the feed
-
-### calendar_days_forward (optionla, defaults to 1, added in 0.3.5b2)
-The number of days after the current day to include calendar events for in the feed. This will include events up to the end of that day so, if you only want the current day, this should be set to 0
-
-
-### history_days_back (optional, defaults to 0, added in 0.4.0b3)
-The number of days before the current day to include event history for in the feed
-
-### id_filter (optional)
-This is a regular expression for filtering persistent notifications by notification id. In the example above, "^home_feed_.\*" will result in only notifications with ids starting with home_feed_ from being displayed.
-
-### entities (optional)
-A list of entities to display on the feed. These can be displayed as single items, or multiple items from a sensor attribute (see the section on multi-item entities).
-Single item entities are displayed as follows:
-* For sensors with a device_class of "timestamp" the message text is the entity name and the time is the state of the sensor.
-* For other single-valued entities the default message text is in the format "*entity name* @ *state*" (but can be customized by using the **content_template** option, see below) and the time is the last modified time of the entity.
-
-Each entity can be just an entity id or an **entity** object, allowing more customisation.
-
-### show_empty (optional, defaults to true)
-Whether to show the card if there are no items to show
-
-### scrollbars_enabled (optional, defaults to true)
-This controls whether the feed is scrollable. If this is set to false then, by default, all items will be displayed unless the **max_height** or **max_item_count** option is used.
-
-### max_height (optional, defaults to 28em when scrollbars enabled, otherwise unlimited)
-The maximum height of the feed in CSS format (e.g. "100px", "20em", etc.). When scrollbars are disabled, the content will be cut off at this height, otherwise it will control the scrollable height.
-
-### max_item_count (optional, defaults to unlimited)
-The maximum number of items to show in the feed, useful if scrollbars are disabled.
-
-### more_info_on_tap (optional, defaults to false)
-When this is true, tapping/clicking and entity will display the more-info dialogue. This can be overridden for individual entities (see later). From version 0.3.0 this also supports notifications, calendar events and multi-item entities. Multi-item entities require the new **detail_template** option (see later).
-
-### compact_mode (optional, defaults to false)
-When this is true, a more compact layout is used where the time is displayed on the same line as the item content.
-Note: Due to layout constraints this also removes the dismiss button from notifications and so notifications will always be clickable in compact mode even if **more_info_on_tap** is disabled.
-
-### exact_durations (optional, defaults to false)
-By default, durations of less than a minute are displayed as "<1 minute ago" or "in <1 minute". Setting this option to true disables this, and displays the exact duration.
-**Note:** Doing this will make the time difference display refresh every second until the duration is 1 minute
-
-### state_color (optional, defaults to false)
-Setting this to true will change the icon colour based on the state (the same as the option in the standard Entities card)
-
-## Entity object
+### `entity` options
 
 For single-item entities the following options are supported, see the section on multi-item entities for the options available for those.
 
