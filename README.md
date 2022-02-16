@@ -51,6 +51,8 @@ Version 0.2.4 uses dynamic module imports to import the Moment module. Firefox v
 
 ![Example](https://user-images.githubusercontent.com/2099542/53899297-d0abb580-4031-11e9-8357-ac45c71e95f5.png)
 
+:white_check_mark: **means required**.
+
 | Name | Type | Default | Description | Added in | 
 | ---- | :--: | :-----: | ----------- | :-----: |
 | `card_id` | string |  | If this is set, it is used as the key for cacheing the feed in Local Storage, otherwise a key based on URL and card title is used. | 0.4.0 |
@@ -161,33 +163,16 @@ To add multi-item entities for this the following format would be used:
         max_items: 5
         content_template: '{{title}}'
 
-### multiple_items (required)
-This must be **true** to identify the entity as a multi-item entity
+| Name | Type | Default | Description |
+| ---- | :--: | :-----: | ----------- |
+| :white_check_mark: `multiple_items` | boolean |  | This must be `true` to identify the entity as a multi-item entity |
+| :white_check_mark: `list_attribute` | string |  | The attribute on the entity which holds the list of items which should be included in the feed |
+| `timestamp_property ` |  |  | The property on the object which has the posted time. The property can be either a string in ISO format or a Unix timestamp. If this is not supplied, the modified timestamp of the entity is used. |
+| `max_items ` | number | 5 | The maximum number of items to display for this entity |
+| :white_check_mark: `content_template ` |  |  | This controls the message text which is displayed for each item. Any property on the object can be included as part of the text by using the format {{*propertyname*}} <br>Basic example, template generating text: '{{title}}' -> 'Post title' <br>Advanced example, template generating Markdown: <br> '\[{{title}}\]({{url}})' -> "\[Post title\](https://www.reddit.com/r/...)"<br>This would be rendered as [Post title](https://www.reddit.com/r/...)|
+| `detail_template ` |  |  | This controls the content of the more-info popup when clicking on the item (if `more_info_on_tap` is enabled). This works the same as the `content_template` option but, since it uses the built-in Markdown card, also supports Jinja2 templates. The item properties can be used in the Jinja2 template via the **config.item** property, for example "{{ config.item.body }}".|
 
-### list_attribute (required)
-The attribute on the entity which holds the list of items which should be included in the feed
-
-### timestamp_property (optional)
-The property on the object which has the posted time. The property can be either a string in ISO format or a Unix timestamp. If this is not supplied, the modified timestamp of the entity is used.
-
-### max_items (optional, defaults to 5)
-The maximum number of items to display for this entity
-
-### content_template (required)
-This controls the message text which is displayed for each item. Any property on the object can be included as part of the text by using the format {{*propertyname*}}
-
-Basic example, template generating text:
-
-'{{title}}' -> 'Post title'
-
-Advanced example, template generating Markdown:
-
-'\[{{title}}\]({{url}})' -> "\[Post title\](https://www.reddit.com/r/...)"
-This would be rendered as [Post title](https://www.reddit.com/r/...)
-
-### detail_template (optional)
-This controls the content of the more-info popup when clicking on the item (if **more_info_on_tap** is enabled).
-This works the same as the **content_template** option but, since it uses the built-in Markdown card, also supports Jinja2 templates. The item properties can be used in the Jinja2 template via the **config.item** property, for example "{{ config.item.body }}". Here is an example with a Reddit sensor:
+Here is an example with a Reddit sensor:
 
 ```
 - entity: sensor.reddit_homeassistant
