@@ -1,0 +1,8 @@
+Use NodeJS 16 (LTS)
+
+Do once:
+npm init -y
+npm install webpack webpack-cli --save-dev
+
+Then:
+npx webpack
