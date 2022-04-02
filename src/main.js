@@ -81,16 +81,13 @@ class HomeFeedCard extends LitElement {
     static get styles() {
         return css`
                 ha-card {
-                    //padding: 0 16px 16px 16px;
                     overflow: hidden;
                 }
                 #notifications {
-                    margin: -4px 0;
                 }
         
                 #notifications > .item-container {
-                    //margin: 8px 0;
-                    padding: 8px 0;
+                    padding: 8px;
                 }
                 #notifications > hr {
                     margin: 0;
@@ -101,9 +98,8 @@ class HomeFeedCard extends LitElement {
                 }
                 
                 .item-container {
-                    width: 100%;
                     height: auto;
-                    clear:both;
+                    clear: both;
                 }
 
                 .item-left {
@@ -128,6 +124,8 @@ class HomeFeedCard extends LitElement {
                 .item-content {
                     overflow: auto;
                     height: 100%;
+                    padding-left: 10px;
+                    padding-top: 5px;
                 }
                 
                 state-badge {
@@ -950,7 +948,7 @@ class HomeFeedCard extends LitElement {
                 }
 
                 if(this._config.show_notification_title){
-                    var contentText = "<font size='+1em'><b>" + n.title + "</b></font>\n\n" + message;
+                    var contentText = "<font size='+2em'>" + n.title + "</font>\n\n" + message;
                 }
                 else{
                     var contentText = n.message;
